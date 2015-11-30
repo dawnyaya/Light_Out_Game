@@ -1,0 +1,26 @@
+<html>
+<head><style type="text/css">
+	.bigRed {
+		font-size:36pt;
+		color:red;
+		font-family: "Arial", serif;
+	}
+	.bigBlack {
+		font-size:36pt;
+		font-family: "Arial", serif;
+	}
+	.regular {
+		font-size:15pt;
+		font-family: "Arial", serif;
+	}
+</style></head>
+<body>
+<div style="position:relative;left:100;right:300;top:30">
+<p class="bigBlack">Light Out Game</p>
+<p class="regular">Pressing any of the lights will toggle it and the adjacent lights. <br>You will win when all the lights are off.</p>
+<script src="js_light_out.js" ></script>
+<button onclick="javascript:getTable();"><div class="regular">Start New Game</div></button><br><br>
+<span id="table"></span>
+<span id="win_word"></span>
+</div>
+</body></html>
