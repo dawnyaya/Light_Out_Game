@@ -3,8 +3,8 @@ var matrix;
 var n = 5;     //n * n matrix
 var width = 70;
 var height = 70;
-var on = "C:/Users/yayayouknow/Desktop/light_on.png";
-var off = "C:/Users/yayayouknow/Desktop/light_off.png";
+var on = "img/light_on.png";
+var off = "img/light_off.png";
 var count_on = 0;
 
 function getTable() {
