@@ -16,10 +16,13 @@ function getTable() {
 	for(i = 0; i < n; i++) {
 		matrix[i] = new Array(n);
 	}
+	generate_new_game();
+	while(!can_win()) {
+		generate_new_game();
+	}
 	
 	for(i = 0; i < n; i++) {
 		for(j = 0; j < n; j++) {
-			matrix[i][j] = Math.round(Math.random());
 			var cur = document.createElement("img");
 			cur.setAttribute("id", "img" + i + j);
 			if(matrix[i][j] == 1) {
@@ -82,3 +85,76 @@ function win() {
 		}
 	}
 }
+
+function generate_new_game() {
+	for(i = 0; i < n; i++) {
+		for(j = 0; j < n; j++) {
+			matrix[i][j] = Math.round(Math.random());
+		}
+	}
+}
+
+function can_win() {
+	return dfs(0);
+}
+function dfs(index) {
+	if(index == n) {
+		var M = new Array(n);
+		for(var i = 0; i < n; i++) {
+			M[i] = new Array(n);
+			for(j = 0; j < n; j++) {
+				M[i][j] = matrix[i][j];
+			}
+		}
+		return pass_check(M);
+	}
+	for(var i = 0; i < n; i++) {
+		if(dfs(index + 1)) {
+			return true;
+		}
+		flip(matrix, 0, i);
+		if(dfs(index + 1)) {
+			flip(matrix, 0, i);
+			return true;
+		}
+		flip(matrix, 0, i);
+	}
+	return false;
+}
+
+function pass_check(M) {
+	var row = 0;
+	while(row < n - 1) {
+		for(var i = 0; i < n; i++) {
+			if(M[row][i] == 1) {
+				flip(M, row + 1, i);
+			}
+		}
+		row++;
+	}
+	
+	for(var i = 0; i < n; i++) {
+		if(M[row][i] == 1) {
+			return false;
+		}
+	}
+	return true;
+}
+
+function flip(cur, i, j) {
+	cur[i][j] = 1 - cur[i][j];
+	if(i > 0) {
+		cur[i - 1][j] = 1 - cur[i - 1][j];
+	}
+	if(j > 0) {
+		cur[i][j - 1] = 1 - cur[i][j - 1];
+	}
+	if(i < n - 1) {
+		cur[i + 1][j] = 1 - cur[i + 1][j];
+	}
+	if(j < n - 1) {
+		cur[i][j + 1] = 1 - cur[i][j + 1];
+	}
+}
+
+
