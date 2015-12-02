@@ -1,4 +1,3 @@
-
 var matrix;
 var n = 5;     //n * n matrix
 var width = 70;
@@ -6,6 +5,7 @@ var height = 70;
 var on = "img/light_on.png";
 var off = "img/light_off.png";
 var count_on = 0;
+var steps;
 
 function getTable() {
 	var table = document.getElementById("table");
@@ -43,6 +43,7 @@ function getTable() {
 }
 
 function change(i, j) {
+	count_steps();
 	change_helper(i, j);
 	if(i - 1 >= 0) {
 		change_helper(i - 1, j);
@@ -77,7 +78,7 @@ function change_helper(i, j) {
 
 function win() {
 	var win_text = document.getElementById("win_word");
-	win_text.innerHTML = "<p class='bigRed'>You win<p>";
+	win_text.innerHTML = "<p class='bigRed'>You win!<p>";
 	for(i = 0; i < n; i++) {
 		for(j = 0; j < n; j++) {
 			var cur = document.getElementById("img" + i + j);
@@ -88,6 +89,8 @@ function win() {
 
 function generate_new_game() {
 	count_on = 0;
+	steps = -1;
+	count_steps();
 	for(i = 0; i < n; i++) {
 		for(j = 0; j < n; j++) {
 			matrix[i][j] = Math.round(Math.random());
@@ -158,4 +161,8 @@ function flip(cur, i, j) {
 	}
 }
 
+function count_steps() {
+	steps++;
+	document.getElementById("step").innerHTML = steps;
+}
 
