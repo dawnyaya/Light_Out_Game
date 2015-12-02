@@ -87,6 +87,7 @@ function win() {
 }
 
 function generate_new_game() {
+	count_on = 0;
 	for(i = 0; i < n; i++) {
 		for(j = 0; j < n; j++) {
 			matrix[i][j] = Math.round(Math.random());
