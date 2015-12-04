@@ -6,12 +6,15 @@ var on = "img/light_on.png";
 var off = "img/light_off.png";
 var count_on = 0;
 var steps;
+var visited;
+
 
 function getTable() {
 	var table = document.getElementById("table");
 	table.innerHTML = "";
 	var win_text = document.getElementById("win_word");
 	win_text.innerHTML = "";
+	document.getElementById("autoPlay").innerHTML = "<button onclick='javascript:autoPlay();'><div class='regular'>AutoPlay</div></button><br><br>";
 	matrix = new Array(n);
 	for(i = 0; i < n; i++) {
 		matrix[i] = new Array(n);
@@ -90,6 +93,7 @@ function win() {
 function generate_new_game() {
 	count_on = 0;
 	steps = -1;
+	
 	count_steps();
 	for(i = 0; i < n; i++) {
 		for(j = 0; j < n; j++) {
@@ -99,6 +103,7 @@ function generate_new_game() {
 }
 
 function can_win() {
+	visited = new Array(n);
 	return dfs(0);
 }
 function dfs(index) {
@@ -117,10 +122,12 @@ function dfs(index) {
 			return true;
 		}
 		flip(matrix, 0, i);
+		visited[i] = !visited[i];
 		if(dfs(index + 1)) {
 			flip(matrix, 0, i);
 			return true;
 		}
+		visited[i] = !visited[i];
 		flip(matrix, 0, i);
 	}
 	return false;
@@ -166,3 +173,25 @@ function count_steps() {
 	document.getElementById("step").innerHTML = steps;
 }
 
+function autoPlay() {    //电脑自动玩
+	can_win();
+	for(var i = 0; i < n; i++) {
+		if(visited[i] == true) {
+			change(0, i);   //想要慢速执行的程序
+		}
+	}
+	
+	for(var i = 0; i < n - 1; i++) {
+		for(var j = 0; j < n; j++) {
+			if(matrix[i][j] == 1) {
+				//sleep(100);        //通过下面的sleep，只会显示最终的结果，灯变换的过程不会显示
+				//setTimeout(function() {change(i+1, j);}, 1000);   //结果错误，也看不到灯变换的过程
+				change(i+1, j);   //想要慢速执行的程序
+			}
+		}
+	}
+}
+function sleep(delay) {
+        var start = new Date().getTime();
+        while (new Date().getTime() < start + delay);
+}
