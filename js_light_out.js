@@ -10,6 +10,7 @@ var visited;
 
 
 function getTable() {
+    
 	var table = document.getElementById("table");
 	table.innerHTML = "";
 	var win_text = document.getElementById("win_word");
@@ -118,9 +119,11 @@ function dfs(index) {
 		return pass_check(M);
 	}
 	for(var i = 0; i < n; i++) {
+		//case 1:
 		if(dfs(index + 1)) {
 			return true;
 		}
+		//case 2:
 		flip(matrix, 0, i);
 		visited[i] = !visited[i];
 		if(dfs(index + 1)) {
@@ -172,26 +175,37 @@ function count_steps() {
 	steps++;
 	document.getElementById("step").innerHTML = steps;
 }
-
-function autoPlay() {    //电脑自动玩
+var index;
+var index2;
+function autoPlay() {   
 	can_win();
-	for(var i = 0; i < n; i++) {
-		if(visited[i] == true) {
-			change(0, i);   //想要慢速执行的程序
+	index = 0;
+	autoPlay1();
+}
+
+function autoPlay1() {
+	if(index < n) {
+		if(visited[index] == true) {
+			change(0, index); 
 		}
-	}
-	
-	for(var i = 0; i < n - 1; i++) {
-		for(var j = 0; j < n; j++) {
-			if(matrix[i][j] == 1) {
-				//sleep(100);        //通过下面的sleep，只会显示最终的结果，灯变换的过程不会显示
-				//setTimeout(function() {change(i+1, j);}, 1000);   //结果错误，也看不到灯变换的过程
-				change(i+1, j);   //想要慢速执行的程序
-			}
+		index++;
+		setTimeout(autoPlay1, 300);
+		if(index == n) {
+			index2 = 0;
+			setTimeout(autoPlay2, 300);
 		}
 	}
 }
-function sleep(delay) {
-        var start = new Date().getTime();
-        while (new Date().getTime() < start + delay);
+
+function autoPlay2() {
+	if(index2 < n * (n - 1)) {
+		var row = Math.floor(index2 / n);
+		var col = index2 % n;
+		if(matrix[row][col] == 1) {
+			change(row + 1, col); 
+		}
+		index2++;
+		setTimeout(autoPlay2, 300);
+	}
 }
+
